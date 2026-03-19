@@ -1,12 +1,14 @@
+% MATLAB program that manually adds gaussian noise to an image
+% and removes it using a manually implemented median filter.
 clc
 clear all
 close all
 
 I = imread("images/Task1a_CV.bmp"); % Read the original image
-I_gray = double(rgb2gray(I)); % Convert the image to gray scale     
+I_gray = double(rgb2gray(I)); % Convert the image from rgb grayscale      
 
-gaussian_noise = randn(size(I_gray)) * 25; % Generate Gaussian noise with standard deviation of 25
-I_gaussian = I_gray + gaussian_noise; % Add Gaussian noise to the grayscale image
+gaussian_noise = randn(size(I_gray)) * 15; % Generate Gaussian noise, standard deviation = 15 controls noise strength
+I_gaussian = I_gray + gaussian_noise;      % Add Gaussian noise to the grayscale image
 
 I_padded = padarray(I_gaussian, [1 1], 0, 'both'); % Zero pad by 1 to handle border pixels for 3x3 kernel
 
@@ -17,8 +19,8 @@ I_denoised = zeros(size(I_gaussian)); % Initialise output image with same dimens
 % Apply median filter to remove the noise
 for row = 2:(i-1)
     for col = 2:(j-1)
-        sub = I_padded(row-1:row+1, col-1:col+1);   
-        I_denoised(row-1, col-1) = median(sub(:)); 
+        sub = I_padded(row-1:row+1, col-1:col+1); % Extract 3x3 neighbourhood around current pixel
+        I_denoised(row-1, col-1) = median(sub(:)); % Store median value in output image 
     end
 end
 

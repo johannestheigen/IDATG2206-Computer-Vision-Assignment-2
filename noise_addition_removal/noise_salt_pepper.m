@@ -1,9 +1,11 @@
+% MATLAB program that manually adds salt & pepper noise to an image
+% and removes it using a manually implemented median filter.
 clc
 clear all
 close all
 
 I = imread("images/Task1a_CV.bmp"); % Read the original image
-I_gray = double(rgb2gray(I)); % Convert the image to grayscale            
+I_gray = double(rgb2gray(I)); % Convert the image from RGB to grayscale           
 
 I_salt_pepper = I_gray; % Copy the original grayscale image to preserve original values
 salt_pepper_noise = rand(size(I_gray)); % Generate random noise map for salt and pepper
@@ -19,8 +21,8 @@ I_denoised = zeros(size(I_salt_pepper)); % Initialise output image with same dim
 % Apply median filter to remove the noise
 for row = 2:(i-1)
     for col = 2:(j-1)
-        sub = I_padded(row-1:row+1, col-1:col+1);   
-        I_denoised(row-1, col-1) = median(sub(:)); 
+        sub = I_padded(row-1:row+1, col-1:col+1); % Extract 3x3 neighbourhood around current pixel
+        I_denoised(row-1, col-1) = median(sub(:)); % Store median value in output image 
     end
 end
 
