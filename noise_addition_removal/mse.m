@@ -12,7 +12,7 @@ I_gaussian = imnoise(I, "gaussian");  % Apply gaussian noise to the image
 
 I_salt_denoised = medfilt2(I_salt); % Denoising using median filter
 
-I_gaussian_denoised = wiener2(I,[5,5]); % Denoising using wiener filter
+I_gaussian_denoised = wiener2(I,[4,4]); % Denoising using wiener filter
 
 % Compare the results using Mean Squared Error (MSE)
 err_salt_pepper = immse(im2double(I), im2double(I_salt_denoised)); 
