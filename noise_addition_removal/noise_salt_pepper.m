@@ -1,10 +1,14 @@
 % MATLAB program that manually adds salt & pepper noise to an image
-% and removes it using a manually implemented median filter.
+% and removes it using a manually implemented median filter. It also 
+% calculates the mean squared error (mse) to determine the similarity
+% between the original image and the denoised version.
 clc
 clear all
 close all
 
-I = imread("images/Task1a_CV.bmp"); % Read the original image
+img = "images/Task1a_CV.bmp"; % The file path of the image to read
+I = imread(img); % Read the original image
+
 I_gray = double(rgb2gray(I)); % Convert the image from RGB to grayscale           
 
 I_salt_pepper = I_gray; % Copy the original grayscale image to preserve original values
@@ -12,7 +16,7 @@ salt_pepper_noise = rand(size(I_gray)); % Generate random noise map for salt and
 I_salt_pepper(salt_pepper_noise < 0.05) = 0; % Set 5% of pixels to black (pepper)
 I_salt_pepper(salt_pepper_noise > 0.95) = 255; % Set 5% of pixels to white (salt)
 
-I_padded = padarray(I_salt_pepper, [1 1], 0, 'both'); % Zero pad by 1 to handle border pixels for 3x3 kernel
+I_padded = padarray(I_salt_pepper, [1 1], 'replicate', 'both'); % Pad the image to handle border pixels for 3x3 neighbourhood
 
 [i, j] = size(I_padded); % Get padded image dimensions for loop bounds
 
@@ -25,6 +29,17 @@ for row = 2:(i-1)
         I_denoised(row-1, col-1) = median(sub(:)); % Store median value in output image 
     end
 end
+
+% Calculate the mean squared error (MSE) to compare the original grayscale image and the denoised version. 
+[m, n] = size(I_gray);
+sum  = 0;
+for row = 1:m
+    for col = 1:n
+        sum = sum + (I_gray(row, col) - I_denoised(row, col))^2;
+    end
+end
+mse = sum  * ( 1/ (m*n) );
+fprintf('\nThe mean squared error for the denoised image with salt and pepper noise is %0.4f\n', mse);
 
 % Plot original, noisy and denoised images
 figure(1);
