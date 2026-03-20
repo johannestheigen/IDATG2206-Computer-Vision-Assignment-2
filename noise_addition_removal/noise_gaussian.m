@@ -6,26 +6,26 @@ clc
 clear all
 close all
 
-img = "images/Task1a_CV.bmp"; % The file path of the image to read
+img = "images/Task1a_CV.bmp";
 I = imread(img); % Read the original image
 
 I_gray = double(rgb2gray(I)); % Convert the image from rgb grayscale      
 
 gaussian_noise = randn(size(I_gray)) * 25; % Generate Gaussian noise, standard deviation = 15 controls noise strength
-I_gaussian = I_gray + gaussian_noise;      % Add Gaussian noise to the grayscale image
+I_gaussian = I_gray + gaussian_noise; % Add Gaussian noise to the grayscale image
 
-I_padded = padarray(I_gaussian, [2 2], 'replicate', 'both'); % Pad the image to handle border pixels for 3x3 neighbourhood
+I_padded = padarray(I_gaussian, [2 2], 'replicate', 'both');
 
-[i, j] = size(I_padded); % Get padded image dimensions for loop bounds
+[i, j] = size(I_padded); 
 
-I_denoised = zeros(size(I_gaussian)); % Initialise output image with same dimensions as input
+I_denoised = zeros(size(I_gaussian)); 
 
 % Apply arithmetic mean filter to remove the noise
 for row = 3:(i-2)
     for col = 3:(j-2)
-        sub = I_padded(row-2:row+2, col-2:col+2); % Extract 5x5 neighbourhood around current pixel
-        [m, n] = size(sub); % Retrieve the dimensions of the neighbourhood for mean calculation
-        I_denoised(row-2, col-2) = (1/(m*n)) * sum(sub(:)); % Compute the arithmetic mean of the neighbourhood and store in output image
+        sub = I_padded(row-2:row+2, col-2:col+2);
+        [m, n] = size(sub); 
+        I_denoised(row-2, col-2) = (1/(m*n)) * sum(sub(:));
     end
 end
 
