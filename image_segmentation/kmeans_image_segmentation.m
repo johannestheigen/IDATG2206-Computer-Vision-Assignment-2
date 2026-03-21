@@ -6,7 +6,7 @@ clear all
 
 img = "/images/Task1_CV.bmp";
 
-I = imread(img);
+I = imread(img); % Read the original image
 
 % Segment the image using K-means
 [L,Centers] = imsegkmeans(I,3);
