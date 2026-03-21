@@ -18,7 +18,7 @@ salt_pepper_noise = rand(size(I_gray));
 I_salt_pepper(salt_pepper_noise < 0.05) = 0;
 I_salt_pepper(salt_pepper_noise > 0.95) = 255; 
 
-% Apply median filter to remove the noise
+% Apply median filter to remove the noise (AI assisted this part of the code by explaining of to use flatten to convert a matrix to a vector)
 I_padded = padarray(I_salt_pepper, [1 1], 'replicate', 'both');
 [i, j] = size(I_padded);
 I_denoised = zeros(size(I_salt_pepper));
