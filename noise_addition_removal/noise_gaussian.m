@@ -11,8 +11,9 @@ I = imread(img); % Read the original image
 
 I_gray = double(rgb2gray(I)); % Convert the image from rgb grayscale      
 
-gaussian_noise = randn(size(I_gray)) * 25; % Generate Gaussian noise, standard deviation = 15 controls noise strength
-I_gaussian = I_gray + gaussian_noise; % Add Gaussian noise to the grayscale image
+% Add Gaussian noise manually to the image (AI assisted code)
+gaussian_noise = randn(size(I_gray)) * 25; 
+I_gaussian = I_gray + gaussian_noise;
 
 I_padded = padarray(I_gaussian, [2 2], 'replicate', 'both');
 
@@ -20,7 +21,7 @@ I_padded = padarray(I_gaussian, [2 2], 'replicate', 'both');
 
 I_denoised = zeros(size(I_gaussian)); 
 
-% Apply arithmetic mean filter to remove the noise
+% Apply arithmetic mean filter to remove the noise (AI assisted this part of the code by explaining of to use flatten to convert a matrix to a vector)
 for row = 3:(i-2)
     for col = 3:(j-2)
         sub = I_padded(row-2:row+2, col-2:col+2);
@@ -30,14 +31,7 @@ for row = 3:(i-2)
 end
 
 % Calculate the mean squared error (MSE) to compare the original grayscale image and the denoised version. 
-[m, n] = size(I_gray);
-sum  = 0;
-for row = 1:m
-    for col = 1:n
-        sum = sum + (double(I_gray(row, col)) - double(I_denoised(row, col)))^2;
-    end
-end
-mse = sum  * ( 1/ (m*n) );
+mse = immse(I_gray, I_denoised);
 fprintf('\nThe mean squared error for the denoised image with gaussian noise is %0.4f\n', mse);
 
 % Plot original, noisy and denoised images

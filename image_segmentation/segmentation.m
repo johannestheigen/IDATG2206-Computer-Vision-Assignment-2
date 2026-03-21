@@ -4,8 +4,9 @@ clc
 close all
 clear all
 
-I = imread("cameraman.tif");
-I = imnoise(I, 'poisson');
+img = "/images/Task1_CV.bmp";
+
+I = imread(img);
 
 % Segment the image using K-means
 [L,Centers] = imsegkmeans(I,3);
